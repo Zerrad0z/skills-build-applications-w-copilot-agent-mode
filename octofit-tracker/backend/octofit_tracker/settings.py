@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-80bwakr8yvf%u@lku+3)&xuwo_f0=@s^5*kdbqq=j8s4#-ibr0
 DEBUG = True
 
 
+
 # Allow Codespaces and localhost
 import os
 CODESPACE_NAME = os.environ.get('CODESPACE_NAME')

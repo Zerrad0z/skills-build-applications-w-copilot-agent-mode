@@ -26,11 +26,25 @@ router.register(r'workouts', views.WorkoutViewSet, basename='workout')
 router.register(r'leaderboards', views.LeaderboardViewSet, basename='leaderboard')
 
 
-from django.views.generic import RedirectView
+
+import os
+from django.http import JsonResponse
+from django.views.generic import RedirectView, View
+
+
+# Helper view to show API root URL with codespace support
+class APIRootURLView(View):
+    def get(self, request, *args, **kwargs):
+        codespace_name = os.environ.get('CODESPACE_NAME')
+        if codespace_name:
+            api_url = f"https://{codespace_name}-8000.app.github.dev/api/"
+        else:
+            api_url = "/api/"
+        return JsonResponse({"api_root": api_url})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='/api/', permanent=False)),
+    path('', APIRootURLView.as_view(), name='codespace-api-root'),
     path('api/', views.api_root, name='api-root'),
     path('api/', include(router.urls)),
 ]
